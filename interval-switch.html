@@ -1,0 +1,120 @@
+<script type="text/javascript">
+  RED.nodes.registerType('interval-switch',{
+    category: 'time related',
+    color: '#a6bbcf',
+    defaults: {
+      name: {value:""},
+      duration: {value: 60, required: true, validate: RED.validators.number()},
+      payload: {value:""},
+      payloadType: {value:"none"},
+      counterPath: {value:"payload"},
+      immediate: {value: true}
+    },
+    inputs:1,
+    outputs:1,
+    icon: "timer",
+    label: function() {
+      return this.name||"interval-switch";
+    },
+    oneditprepare: function() {
+      $("#node-input-payload").typedInput({
+        type:"none",
+        types:["str","num","bool","json",{
+          value: "none",
+          options: []
+        }],
+        typeField: "#node-input-payloadType"
+      });
+      $("#node-input-counterPath").typedInput({
+        type:"msg",
+        types:["msg"],
+        typeField: "#node-input-counterPathType"
+      });
+    },
+    oneditsave: function() {
+      this.payloadType = $("#node-input-payload").typedInput('type');
+    }
+  });
+</script>
+
+<script type="text/html" data-template-name="interval-switch">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name">
+  </div>
+  <div class="form-row">
+    <label for="node-input-duration"><i class="fa fa-clock-o"></i> Duration seconds</label>
+    <input type="text" id="node-input-duration" placeholder="Seconds">
+  </div>
+  <div class="form-row">
+    <label for="node-input-payload"><i class="fa fa-tag"></i> Output Payload</label>
+    <input type="text" id="node-input-payload">
+    <input type="hidden" id="node-input-payloadType">
+  </div>
+  <div class="form-row">
+    <label for="node-input-counterPath"><i class="fa fa-tag"></i> Store counter in output</label>
+    <input type="text" id="node-input-counterPath">
+    <input type="hidden" id="node-input-counterPathType">
+  </div>
+  <div class="form-row">
+    <label for="node-input-immediate"><i class="fa fa-tag"></i> Immediate first message</label>
+    <input type="checkbox" id="node-input-immediate" value="true">
+  </div>
+</script>
+
+<script type="text/html" data-help-name="interval-switch">
+  <p>emits messages periodically when turned on.</p>
+
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+    <dt>payload
+      <span class="property-type">string | number | boolean</span>
+    </dt>
+    <dd>must be one of:
+      <ul>
+        <li><b>"start" | "on" | "1" | "true" | 1 | true</b> (in the following referenced as "start" signal)</li>
+        <li><b>"stop" | "off" | "0" | "false" | 0 | false </b> (in the following referenced as "stop" signal)</li>
+        <li>"toggle"</li>
+      </ul>
+    </dd>
+  </dl>
+
+  <h3>Outputs</h3>
+  <ol class="node-ports">
+    <li>Standard output
+      <dl class="message-properties">
+        <dt>payload <span class="property-type">string</span></dt>
+        <dd>
+          the value is taken from "payload" configuration property<br/>
+          if "counterPath" config is set, then a counter is stored in the message at the specified property
+        </dd>
+      </dl>
+    </li>
+    <li>Standard error
+      <dl class="message-properties">
+        <dt>payload <span class="property-type">string</span></dt>
+        <dd>error message</dd>
+      </dl>
+    </li>
+  </ol>
+
+  <h3>Details</h3>
+  <p>
+    If the node is in "off" state, a "start" signal will change the node state to "on" state.
+  </p>
+  <p>
+    When the state is changed from "off" to "on" and "immediate" config setting is true, a message with the output payload will be emitted immediately.
+  </p>
+  <p>
+    The state will be changed back to "off", when a "stop" signal is received.
+  </p>
+  <p>
+    While in "on" state, an output signal is emitted every "duration" seconds.
+  </p>
+  <p>
+    While in "off" state, "stop" signals are ignored.
+  </p>
+  <p>
+    The "toggle" signal can be used to act either as "start" or "stop" depending on state.
+  </p>
+</script>

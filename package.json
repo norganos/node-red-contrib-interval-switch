@@ -1,0 +1,35 @@
+{
+  "name": "node-red-contrib-interval-switch",
+  "version": "0.0.1",
+  "description": "Plugin for Node-RED: provides a node that emits signals periodically that can be turned off",
+  "main": "interval-switch.js",
+  "scripts": {
+    "test": "mocha \"test/**/*_spec.js\""
+  },
+  "keywords": [
+    "node-red",
+    "interval"
+  ],
+  "author": "Stephan Linkel <norganos@linkel.de>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/norganos/node-red-contrib-interval-switch/issues"
+  },
+  "node-red": {
+    "version": ">=1.2.0",
+    "nodes": {
+      "interval-switch": "interval-switch.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/norganos/node-red-contrib-interval-switch.git"
+  },
+  "homepage": "https://github.com/norganos/node-red-contrib-interval-switch#readme",
+  "devDependencies": {
+    "mocha": "^9.1.4",
+    "node-red": "^2.1.6",
+    "node-red-node-test-helper": "^0.2.7",
+    "should": "^13.2.3"
+  }
+}
