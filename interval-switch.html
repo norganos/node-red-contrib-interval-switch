@@ -5,24 +5,21 @@
     defaults: {
       name: {value:""},
       duration: {value: 60, required: true, validate: RED.validators.number()},
-      payload: {value:""},
-      payloadType: {value:"none"},
+      payload: {value:"{}"},
+      payloadType: {value:"json"},
       counterPath: {value:"payload"},
       immediate: {value: true}
     },
     inputs:1,
     outputs:1,
-    icon: "timer",
+    icon: "timer.svg",
     label: function() {
       return this.name||"interval-switch";
     },
     oneditprepare: function() {
       $("#node-input-payload").typedInput({
-        type:"none",
-        types:["str","num","bool","json",{
-          value: "none",
-          options: []
-        }],
+        type:"json",
+        types:["str","num","bool","json"],
         typeField: "#node-input-payloadType"
       });
       $("#node-input-counterPath").typedInput({

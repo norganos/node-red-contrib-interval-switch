@@ -31,8 +31,8 @@ module.exports = function(RED) {
                 }
                 context = context[head];
             }
-            setProp(context[head], tail, val);
-        } else {
+            setProp(context, tail, val);
+        } else if (path) {
             context[path] = val;
         }
     }
