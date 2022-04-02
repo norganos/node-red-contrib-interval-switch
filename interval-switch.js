@@ -41,7 +41,7 @@ module.exports = function(RED) {
         RED.nodes.createNode(this, config);
         const node = this;
         node.duration = parseInt(config.duration);
-        node.payload = getTypedVal(config.payloadType, config.payload) || {};
+        node.payloadJson = JSON.stringify(getTypedVal(config.payloadType, config.payload) || {});
         node.counterPath = config.counterPath;
         node.immediate = config.immediate || false;
         node.state = 'off';
@@ -51,7 +51,7 @@ module.exports = function(RED) {
         const emit = function() {
             node.count += 1;
             const msg = {
-                payload: node.payload
+                payload: JSON.parse(node.payloadJson)
             };
             if (node.counterPath) {
                 setProp(msg, node.counterPath, node.count);
